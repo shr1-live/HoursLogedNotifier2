@@ -4,12 +4,12 @@ An interactive dashboard for the same attendance data the desktop app records:
 ring gauges, a weekday comparison chart, office-hours tracking against the 95%
 mark, and WFH days with editable hours.
 
-It is a static site with no backend, so it deploys to Netlify as-is.
+It is a static site with no backend, and the app sits at the root of this
+repository, so any host detects it as a Vite project without configuration.
 
 ## Running locally
 
 ```bash
-cd web
 npm install
 npm run dev
 ```
@@ -17,20 +17,29 @@ npm run dev
 ## Building
 
 ```bash
-npm run build     # outputs to web/dist
+npm run build     # outputs to dist/
 npm run preview   # serves the built output
 ```
 
-## Deploying to Netlify
+## Deploying
 
-The root `netlify.toml` already sets the base directory, build command and publish
-directory, plus SPA redirects and cache headers. Connect the repository in
-Netlify and it needs no further configuration — or run `netlify deploy --prod`
-from this folder.
+Connect the repository and deploy the `main` branch. Nothing else to set:
+
+- **Vercel** — `vercel.json` pins the Vite preset and carries the security
+  headers and the single-page rewrite.
+- **Netlify / Cloudflare Pages** — `public/_headers` and `public/_redirects`
+  are copied into `dist/` at build time and read from there.
+
+Build command `npm run build`, output directory `dist`.
+
+The security headers and the SPA rule are duplicated between `vercel.json` and
+`public/_headers` because no host reads both formats. Change one and change the
+other, or a host ends up serving the site without a content-security policy.
 
 ## How it relates to the desktop app
 
-The two share a data format rather than a server:
+The desktop app lives in a separate repository. The two share a data format
+rather than a server:
 
 | | Desktop (.NET) | Web (React) |
 |---|---|---|
