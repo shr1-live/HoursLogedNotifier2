@@ -1,0 +1,11 @@
+# Normalise line endings in the repository, whatever the checkout platform.
+# Without this every commit from Windows reports "LF will be replaced by CRLF",
+# and a file can land with mixed endings depending on who touched it last.
+* text=auto eol=lf
+
+# Binary assets must never be translated.
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
